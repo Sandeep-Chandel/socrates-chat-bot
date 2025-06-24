@@ -1,7 +1,9 @@
 package com.example.socratic_chat_bot.services;
 
 import com.example.socratic_chat_bot.config.GemmaChatModelConfig;
+import com.example.socratic_chat_bot.dto.Grade;
 import com.example.socratic_chat_bot.dto.Question;
+import com.example.socratic_chat_bot.dto.Topic;
 import com.example.socratic_chat_bot.utils.ResponseUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +20,11 @@ public class TestQuestionsService {
 
     private final OllamaChatModel gemmaChatModel;
 
-    public List<Question> generateTestQuestions() {
+    public List<Question> generateTestQuestions(Topic topic, Grade grade) {
 
         String prompt = TEST_QUIZ_PROMPT.formatted(
-            "Nouns in English Language Grammar",
-            "3rd Grade");
+            topic.getText(),
+            grade.getText());
         ChatResponse chatResponse = gemmaChatModel.call(new Prompt(prompt));
         String nextQuestion = chatResponse.getResult().getOutput().getText();
         List<Question> questions = ResponseUtils.extractJsonFromLLMResponse(nextQuestion);

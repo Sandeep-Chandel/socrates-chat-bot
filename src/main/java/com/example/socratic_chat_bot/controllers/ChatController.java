@@ -1,9 +1,11 @@
 package com.example.socratic_chat_bot.controllers;
 
+import com.example.socratic_chat_bot.dto.ChatHistoryDto;
 import com.example.socratic_chat_bot.dto.Grade;
 import com.example.socratic_chat_bot.dto.NewChatResponseDto;
 import com.example.socratic_chat_bot.dto.Question;
 import com.example.socratic_chat_bot.dto.Topic;
+import com.example.socratic_chat_bot.services.ChatHistoryService;
 import com.example.socratic_chat_bot.services.SocraticChatService;
 import com.example.socratic_chat_bot.services.TestQuestionsService;
 import java.util.List;
@@ -27,11 +29,14 @@ public class ChatController {
 
     private final SocraticChatService socraticChatService;
 
+    private final ChatHistoryService chatHistoryService;
+
     @GetMapping(path = "genTestQuestions")
     @ResponseBody
-    public List<Question> genTestQuestions() {
+    public List<Question> genTestQuestions(
+        @RequestParam Topic topic, @RequestParam Grade grade) {
 
-        return testQuestionsService.generateTestQuestions();
+        return testQuestionsService.generateTestQuestions(topic, grade);
     }
 
     @GetMapping(path = "conv/{chatId}")
@@ -46,6 +51,13 @@ public class ChatController {
     public NewChatResponseDto createNewChat(@RequestParam Topic topic, @RequestParam Grade grade) {
 
         return socraticChatService.createNewChat(topic, grade);
+    }
+
+    @GetMapping(path = "chatHistory/{chatId}")
+    @ResponseBody
+    public List<ChatHistoryDto> chatHistory(@PathVariable String chatId) {
+
+        return chatHistoryService.getChatHistory(chatId);
     }
 
 }
