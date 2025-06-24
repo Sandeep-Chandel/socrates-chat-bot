@@ -14,6 +14,7 @@ After completing a learning session user can test themselves on the same topic u
 - **Socratic Method**: Learn through guided questioning and critical thinking
 - **Content Moderation**: Built-in moderation using Granite3-guardian model
 - **Chat History**: Track and review previous learning sessions
+- **Test Quiz**: Take quiz to test what you learned
 - **Multiple Topics & Grades**: Support for various educational topics and grade levels
 - **RESTful API**: Clean REST endpoints for easy integration
 
