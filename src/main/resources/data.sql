@@ -1,0 +1,73 @@
+select * from chat;
+-- -- Insert 5 Chat records
+-- INSERT INTO chat (id, chat_id, title, date_created, topic, grade) VALUES
+--     (1, 'chat-001', 'Introduction to Algebra', 1672531200000, 'NOUN', 'GRADE_8'),
+--     (2, 'chat-002', 'Understanding Photosynthesis', 1672617600000, 'VERB', 'GRADE_7'),
+--     (3, 'chat-003', 'World War II History', 1672704000000, 'ADJECTIVE', 'GRADE_10'),
+--     (4, 'chat-004', 'Basic Grammar Rules', 1672790400000, 'ADVERB', 'GRADE_6'),
+--     (5, 'chat-005', 'Chemical Reactions', 1672876800000, 'PRONOUN', 'GRADE_9');
+--
+-- -- Insert 10 ChatHistory records for chat-001
+-- INSERT INTO chat_history (id, chat_id, message, message_type, date_created) VALUES
+--     (1, 'chat-001', 'Hello! I''d like to learn about algebra.', 'USER', 1672531260000),
+--     (2, 'chat-001', 'Great! Let''s start with the basics. What is a variable in algebra?', 'ASSISTANT', 1672531320000),
+--     (3, 'chat-001', 'A variable is a letter that represents an unknown number.', 'USER', 1672531380000),
+--     (4, 'chat-001', 'Excellent! Now, can you solve this equation: x + 5 = 12?', 'ASSISTANT', 1672531440000),
+--     (5, 'chat-001', 'x = 7', 'USER', 1672531500000),
+--     (6, 'chat-001', 'Perfect! You subtracted 5 from both sides. Let''s try a harder one: 2x + 3 = 11', 'ASSISTANT', 1672531560000),
+--     (7, 'chat-001', 'First I subtract 3 from both sides: 2x = 8, then divide by 2: x = 4', 'USER', 1672531620000),
+--     (8, 'chat-001', 'Outstanding work! You''re getting the hang of solving linear equations.', 'ASSISTANT', 1672531680000),
+--     (9, 'chat-001', 'Can we try some word problems next?', 'USER', 1672531740000),
+--     (10, 'chat-001', 'Absolutely! Word problems help apply algebra to real situations.', 'ASSISTANT', 1672531800000);
+--
+-- -- Insert 10 ChatHistory records for chat-002
+-- INSERT INTO chat_history (id, chat_id, message, message_type, date_created) VALUES
+--     (11, 'chat-002', 'I need help understanding how plants make food.', 'USER', 1672617660000),
+--     (12, 'chat-002', 'You''re asking about photosynthesis! What do you think plants need to make food?', 'ASSISTANT', 1672617720000),
+--     (13, 'chat-002', 'Sunlight and water?', 'USER', 1672617780000),
+--     (14, 'chat-002', 'Good start! They also need carbon dioxide from the air. What gas do plants release?', 'ASSISTANT', 1672617840000),
+--     (15, 'chat-002', 'Oxygen!', 'USER', 1672617900000),
+--     (16, 'chat-002', 'Exactly! The equation is: 6CO2 + 6H2O + light energy → C6H12O6 + 6O2', 'ASSISTANT', 1672617960000),
+--     (17, 'chat-002', 'That looks complicated. What is C6H12O6?', 'USER', 1672618020000),
+--     (18, 'chat-002', 'That''s glucose - sugar! It''s the food plants make for energy.', 'ASSISTANT', 1672618080000),
+--     (19, 'chat-002', 'So plants basically eat sugar they make themselves?', 'USER', 1672618140000),
+--     (20, 'chat-002', 'Exactly! And this process happens in the chloroplasts, which contain chlorophyll.', 'ASSISTANT', 1672618200000);
+--
+-- -- Insert 10 ChatHistory records for chat-003
+-- INSERT INTO chat_history (id, chat_id, message, message_type, date_created) VALUES
+--     (21, 'chat-003', 'Can you help me understand what caused World War II?', 'USER', 1672704060000),
+--     (22, 'chat-003', 'Certainly! There were multiple causes. What do you know about the Treaty of Versailles?', 'ASSISTANT', 1672704120000),
+--     (23, 'chat-003', 'It ended World War I and was harsh on Germany?', 'USER', 1672704180000),
+--     (24, 'chat-003', 'Right! The harsh terms created resentment. What economic crisis happened in the 1930s?', 'ASSISTANT', 1672704240000),
+--     (25, 'chat-003', 'The Great Depression?', 'USER', 1672704300000),
+--     (26, 'chat-003', 'Yes! This economic crisis helped extremist leaders gain power. Who rose to power in Germany?', 'ASSISTANT', 1672704360000),
+--     (27, 'chat-003', 'Adolf Hitler and the Nazi Party', 'USER', 1672704420000),
+--     (28, 'chat-003', 'Correct. Hitler''s aggressive expansion started the war. Which country did Germany invade first?', 'ASSISTANT', 1672704480000),
+--     (29, 'chat-003', 'Poland in 1939?', 'USER', 1672704540000),
+--     (30, 'chat-003', 'Exactly! This invasion prompted Britain and France to declare war on Germany.', 'ASSISTANT', 1672704600000);
+--
+-- -- Insert 10 ChatHistory records for chat-004
+-- INSERT INTO chat_history (id, chat_id, message, message_type, date_created) VALUES
+--     (31, 'chat-004', 'I''m confused about when to use commas.', 'USER', 1672790460000),
+--     (32, 'chat-004', 'Commas can be tricky! Let''s start with lists. How would you punctuate: I like apples oranges and bananas?', 'ASSISTANT', 1672790520000),
+--     (33, 'chat-004', 'I like apples, oranges, and bananas?', 'USER', 1672790580000),
+--     (34, 'chat-004', 'Perfect! That''s called the Oxford comma. Now, what about joining sentences?', 'ASSISTANT', 1672790640000),
+--     (35, 'chat-004', 'Do you use commas with words like ''and'' and ''but''?', 'USER', 1672790700000),
+--     (36, 'chat-004', 'Yes! Use a comma before coordinating conjunctions (and, but, or, so) when joining complete sentences.', 'ASSISTANT', 1672790760000),
+--     (37, 'chat-004', 'So: ''I studied hard, and I passed the test'' is correct?', 'USER', 1672790820000),
+--     (38, 'chat-004', 'Exactly right! Both parts could stand alone as sentences.', 'ASSISTANT', 1672790880000),
+--     (39, 'chat-004', 'What about after introductory words?', 'USER', 1672790940000),
+--     (40, 'chat-004', 'Great question! Use commas after introductory elements: ''After the game, we went home.''', 'ASSISTANT', 1672791000000);
+--
+-- -- Insert 10 ChatHistory records for chat-005
+-- INSERT INTO chat_history (id, chat_id, message, message_type, date_created) VALUES
+--     (41, 'chat-005', 'Chemical reactions seem really complicated. Where do I start?', 'USER', 1672876860000),
+--     (42, 'chat-005', 'Let''s start simple! What happens when you mix baking soda and vinegar?', 'ASSISTANT', 1672876920000),
+--     (43, 'chat-005', 'It fizzes and bubbles up!', 'USER', 1672876980000),
+--     (44, 'chat-005', 'Exactly! That''s a chemical reaction. The bubbles are carbon dioxide gas. What are reactants?', 'ASSISTANT', 1672877040000),
+--     (45, 'chat-005', 'The things you start with before the reaction?', 'USER', 1672877100000),
+--     (46, 'chat-005', 'Perfect! And what do you call what you get after the reaction?', 'ASSISTANT', 1672877160000),
+--     (47, 'chat-005', 'Products?', 'USER', 1672877220000),
+--     (48, 'chat-005', 'Right! So: Reactants → Products. In our example: Baking soda + Vinegar → Salt + Water + CO2', 'ASSISTANT', 1672877280000),
+--     (49, 'chat-005', 'How do you know what products you''ll get?', 'USER', 1672877340000),
+--     (50, 'chat-005', 'Great question! It depends on the types of atoms and how they rearrange. We''ll explore that next!', 'ASSISTANT', 1672877400000);

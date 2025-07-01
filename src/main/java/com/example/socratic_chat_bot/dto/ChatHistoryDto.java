@@ -4,6 +4,7 @@ import org.springframework.ai.chat.messages.MessageType;
 
 public record ChatHistoryDto(
     String message,
-    MessageType messageType
+    MessageType messageType,
+    Long dateCreated
 ) {
 }

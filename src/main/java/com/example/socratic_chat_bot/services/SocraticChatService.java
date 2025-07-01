@@ -1,5 +1,6 @@
 package com.example.socratic_chat_bot.services;
 
+import com.example.socratic_chat_bot.dto.AssistantResponseDto;
 import com.example.socratic_chat_bot.dto.Grade;
 import com.example.socratic_chat_bot.dto.NewChatResponseDto;
 import com.example.socratic_chat_bot.dto.Topic;
@@ -20,8 +21,8 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.stereotype.Service;
 
-import static com.example.socratic_chat_bot.constants.SystemPrompts.RETRY_SOCRATIC_METHOD_PROMPT;
-import static com.example.socratic_chat_bot.constants.SystemPrompts.SOCRATIC_METHOD_PROMPT;
+import static com.example.socratic_chat_bot.constants.SystemPrompts.RETRY_SOCRATIC_METHOD_PROMPT_2;
+import static com.example.socratic_chat_bot.constants.SystemPrompts.SOCRATIC_METHOD_PROMPT_2;
 
 @Service
 @RequiredArgsConstructor
@@ -50,11 +51,11 @@ public class SocraticChatService {
 
         String chatId = String.valueOf(System.currentTimeMillis());
 
-        String systemResponse = getSystemResponse(topic, grade, chatId);
-
         saveChat(chatId, topic, grade);
 
-        return new NewChatResponseDto(chatId, systemResponse);
+        AssistantResponseDto assistantResponseDto = getSystemResponse(topic, grade, chatId);
+
+        return new NewChatResponseDto(chatId, assistantResponseDto.assistantResponse());
     }
 
     private void saveChat(String chatId, Topic topic, Grade grade) {
@@ -63,15 +64,25 @@ public class SocraticChatService {
         chat.setChatId(chatId);
         chat.setTopic(topic);
         chat.setGrade(grade);
+        chat.setDateCreated(System.currentTimeMillis());
+        chat.setTitle(topic.name() + "_" + grade.name());
 
         chatRepository.save(chat);
     }
 
-    private String getSystemResponse(Topic topic, Grade grade, String chatId) {
+    private AssistantResponseDto getSystemResponse(Topic topic, Grade grade, String chatId) {
 
-        String prompt = SOCRATIC_METHOD_PROMPT.formatted(
+        //String prompt = SOCRATIC_METHOD_PROMPT.formatted(
+        //    topic.getText(),
+        //    grade.getText(),
+        //    "",
+        //    ""
+        //);
+        String prompt = SOCRATIC_METHOD_PROMPT_2.formatted(
+            grade.getText(),
             topic.getText(),
             grade.getText(),
+            topic.getText(),
             "",
             ""
         );
@@ -79,22 +90,31 @@ public class SocraticChatService {
         return getLLMResponse(chatId, "", prompt, topic.getText(), grade.getText());
     }
 
-    public String chat(String chatId, String userResponse) {
+    public AssistantResponseDto chat(String chatId, String userResponse) {
 
         Chat chat = chatRepository.findByChatId(chatId);
         String topic = chat.getTopic().getText();
         String grade = chat.getGrade().getText();
 
-        String prompt = SOCRATIC_METHOD_PROMPT.formatted(
+        //String prompt = SOCRATIC_METHOD_PROMPT.formatted(
+        //    topic,
+        //    grade,
+        //    userResponse,
+        //    chatMemory.get(chatId)
+        //);
+
+        String prompt = SOCRATIC_METHOD_PROMPT_2.formatted(
+            grade,
             topic,
             grade,
+            topic,
             userResponse,
             chatMemory.get(chatId)
         );
         return getLLMResponse(chatId, userResponse, prompt, topic, grade);
     }
 
-    private String getLLMResponse(
+    private AssistantResponseDto getLLMResponse(
         String chatId, String userResponse, String prompt, String topic, String grade) {
         
         // get first response from LLM
@@ -115,10 +135,10 @@ public class SocraticChatService {
             saveInChatHistory(chatId, userResponse, assistantMessage);
 
             if (!passesModerationTest(secondModerationResponse)) {
-                return "LLM could not generate question in language suitable for kids";
+                return AssistantResponseDto.create("LLM could not generate question in language suitable for kids");
             }
 
-            return revisedQuestion;
+            return AssistantResponseDto.create(revisedQuestion);
 
         } else {
 
@@ -126,23 +146,32 @@ public class SocraticChatService {
 
             saveInChatHistory(chatId, userResponse, assistantMessage);
 
-            return nextQuestion;
+            return AssistantResponseDto.create(nextQuestion);
         }
     }
 
     private String retryGeneratingNewLLMResponse(
         String chatId, String userResponse, String topic, String grade, String nextQuestion) {
 
-        String retryPrompt = RETRY_SOCRATIC_METHOD_PROMPT.formatted(
-            topic,
+        //String retryPrompt = RETRY_SOCRATIC_METHOD_PROMPT.formatted(
+        //    topic,
+        //    grade,
+        //    userResponse,
+        //    chatMemory.get(chatId),
+        //    nextQuestion
+        //);
+        String retryPrompt = RETRY_SOCRATIC_METHOD_PROMPT_2.formatted(
             grade,
+            grade,
+            grade,
+            topic,
             userResponse,
             chatMemory.get(chatId),
             nextQuestion
         );
 
-        AssistantMessage assistantMessage1 = getAssistantMessage(retryPrompt);
-        String revisedQuestion = assistantMessage1.getText();
+        AssistantMessage assistantMessage = getAssistantMessage(retryPrompt);
+        String revisedQuestion = assistantMessage.getText();
         return revisedQuestion;
     }
 
@@ -157,10 +186,13 @@ public class SocraticChatService {
 
     private void saveInChatHistory(String chatId, String userResponse, AssistantMessage assistantMessage) {
 
+        long now = System.currentTimeMillis();
+
         ChatHistory userChatHistory = new ChatHistory();
         userChatHistory.setChatId(chatId);
         userChatHistory.setMessageType(MessageType.USER);
         userChatHistory.setMessage(userResponse);
+        userChatHistory.setDateCreated(now);
 
         chatHistoryRepository.save(userChatHistory);
 
@@ -168,6 +200,7 @@ public class SocraticChatService {
         assistantChatHistory.setChatId(chatId);
         assistantChatHistory.setMessageType(MessageType.ASSISTANT);
         assistantChatHistory.setMessage(assistantMessage.getText());
+        assistantChatHistory.setDateCreated(now);
 
         chatHistoryRepository.save(assistantChatHistory);
     }
