@@ -35,7 +35,7 @@ public class ChatHistoryService {
     public List<TopicDto> getTopics() {
 
         return Arrays.stream(Topic.values())
-            .map(e -> new TopicDto(e.getText(), e.name()))
+            .map(e -> new TopicDto(e.getDisplayName(), e.name()))
             .collect(Collectors.toUnmodifiableList());
     }
 
